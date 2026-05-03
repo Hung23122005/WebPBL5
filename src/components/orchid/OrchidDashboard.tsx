@@ -1,13 +1,12 @@
 "use client";
 
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ImageUploader from "./ImageUploader";
 import ActionButtons from "./ActionButtons";
 import StatusMessage from "./StatusMessage";
 import DetectResultCard from "./DetectResultCard";
 import ClassifyResultCard from "./ClassifyResultCard";
-import ClassSampleGallery from "./ClassSampleGallery";
 import OrchidInfoCard from "./OrchidInfoCard";
 import { ClassifyResultSkeleton, DetectResultSkeleton } from "./Skeleton";
 
@@ -15,8 +14,6 @@ import { ClassifyResponse, DetectResponse, HistoryItem } from "@/types/orchid";
 import { checkServerApi, classifyApi, detectApi } from "@/lib/api";
 import { base64ToFile } from "@/lib/utils";
 import { addHistoryItem, buildHistoryItem } from "@/lib/history";
-
-type SamplesManifest = Record<string, string[]>;
 
 function normalizeClassKey(
   result: ClassifyResponse | null | undefined,
@@ -53,23 +50,6 @@ export default function OrchidDashboard() {
   const [serverStatus, setServerStatus] = useState("");
   const [error, setError] = useState("");
 
-  const [samplesManifest, setSamplesManifest] = useState<SamplesManifest>({});
-
-  useEffect(() => {
-    const loadSamplesManifest = async () => {
-      try {
-        const res = await fetch("/orchid_samples/manifest.json");
-        if (!res.ok) return;
-        const data = (await res.json()) as SamplesManifest;
-        setSamplesManifest(data);
-      } catch (err) {
-        console.error("Không load được manifest ảnh mẫu:", err);
-      }
-    };
-
-    loadSamplesManifest();
-  }, []);
-
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -95,12 +75,7 @@ export default function OrchidDashboard() {
     }
   }, []);
 
-  const predictedClassKey = useMemo(() => normalizeClassKey(result), [result]);
-
-  const sampleImages = useMemo(() => {
-    if (!predictedClassKey) return [];
-    return samplesManifest[predictedClassKey] ?? [];
-  }, [predictedClassKey, samplesManifest]);
+  const predictedClassKey = normalizeClassKey(result);
 
   const resetOutputs = () => {
     setResult(null);
@@ -284,11 +259,6 @@ export default function OrchidDashboard() {
             {predictedClassKey && !loadingClassify && !loadingDetectClassify && (
               <OrchidInfoCard classKey={predictedClassKey} />
             )}
-
-            <ClassSampleGallery
-              classKey={predictedClassKey}
-              sampleImages={sampleImages}
-            />
           </div>
         </section>
       </div>
