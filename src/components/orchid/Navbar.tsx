@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 
 const tabs = [
   { href: "/", label: "🌸 Phân loại", exact: true },
+  { href: "/orchids", label: "🌺 Hoa lan" },
   { href: "/history", label: "🕘 Lịch sử" },
   { href: "/stats", label: "📊 Thống kê" },
-  { href: "/settings", label: "⚙️ Cài đặt" },
 ];
 
 export default function Navbar() {

@@ -46,3 +46,21 @@ export type HistoryItem = {
   mode: "classify" | "detect_classify";
   top_results: ClassResult[];
 };
+
+export type CategoryMeta = {
+  id: string;
+  name: string;
+  specie_name?: string;
+  cultivar_chinese_name?: string;
+  specie_chinese_name?: string;
+  count?: number;
+  cover_image?: string;
+};
+
+export type CategoryDetail = {
+  id: string;
+  meta: CategoryMeta | null;
+  markdown: string | null;
+  images: string[];
+  total_images: number;
+};

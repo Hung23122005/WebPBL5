@@ -1,4 +1,6 @@
 import {
+  CategoryDetail,
+  CategoryMeta,
   ClassifyResponse,
   DetectResponse,
   HealthResponse,
@@ -47,5 +49,21 @@ export async function detectApi(file: File): Promise<DetectResponse> {
     throw new Error(`Lỗi detect ${res.status}: ${text}`);
   }
 
+  return res.json();
+}
+
+export function toClassCode(classId: number): string {
+  return `class${String(classId).padStart(4, "0")}`;
+}
+
+export async function getCategoryDetail(classId: string): Promise<CategoryDetail> {
+  const res = await fetch(`${getServerUrl()}/categories/${classId}`);
+  if (!res.ok) throw new Error(`Không lấy được thông tin class: ${classId}`);
+  return res.json();
+}
+
+export async function getAllCategories(): Promise<{ categories: CategoryMeta[] }> {
+  const res = await fetch(`${getServerUrl()}/categories`);
+  if (!res.ok) throw new Error("Không lấy được danh sách class");
   return res.json();
 }

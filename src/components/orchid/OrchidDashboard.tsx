@@ -8,6 +8,7 @@ import StatusMessage from "./StatusMessage";
 import DetectResultCard from "./DetectResultCard";
 import ClassifyResultCard from "./ClassifyResultCard";
 import ClassSampleGallery from "./ClassSampleGallery";
+import OrchidInfoCard from "./OrchidInfoCard";
 import { ClassifyResultSkeleton, DetectResultSkeleton } from "./Skeleton";
 
 import { ClassifyResponse, DetectResponse, HistoryItem } from "@/types/orchid";
@@ -277,6 +278,11 @@ export default function OrchidDashboard() {
                 result={result}
                 predictedClassKey={predictedClassKey}
               />
+            )}
+
+            {/* Thông tin class từ server */}
+            {predictedClassKey && !loadingClassify && !loadingDetectClassify && (
+              <OrchidInfoCard classKey={predictedClassKey} />
             )}
 
             <ClassSampleGallery
