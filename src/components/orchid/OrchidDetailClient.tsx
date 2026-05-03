@@ -123,7 +123,22 @@ export default function OrchidDetailClient({ id }: { id: string }) {
                   [&_code]:rounded [&_code]:bg-white/10 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-white/90
                   [&_blockquote]:border-l-2 [&_blockquote]:border-violet-400/50 [&_blockquote]:pl-4 [&_blockquote]:text-white/70
                 ">
-                  <ReactMarkdown>{detail.markdown}</ReactMarkdown>
+                  <ReactMarkdown
+                    components={{
+                      a: ({ href, children }) => (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 rounded-lg border border-violet-400/30 bg-violet-500/10 px-2 py-0.5 text-xs font-medium text-violet-300 no-underline transition hover:bg-violet-500/20 hover:text-violet-200"
+                        >
+                          {children} ↗
+                        </a>
+                      ),
+                    }}
+                  >
+                    {detail.markdown}
+                  </ReactMarkdown>
                 </div>
               ) : (
                 <p className="italic text-white/50">Chưa có thông tin mô tả.</p>

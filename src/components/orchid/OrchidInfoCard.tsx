@@ -114,7 +114,22 @@ export default function OrchidInfoCard({ classKey }: Props) {
             }`}
           >
             <div className="prose prose-sm prose-invert max-w-none text-white/80 [&_h1]:text-lg [&_h1]:font-semibold [&_h2]:text-base [&_h2]:font-semibold [&_h3]:text-sm [&_h3]:font-semibold [&_li]:text-white/70 [&_p]:text-white/70 [&_strong]:text-white">
-              <ReactMarkdown>{detail.markdown!}</ReactMarkdown>
+              <ReactMarkdown
+                components={{
+                  a: ({ href, children }) => (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 rounded-lg border border-violet-400/30 bg-violet-500/10 px-2 py-0.5 text-xs font-medium text-violet-300 no-underline transition hover:bg-violet-500/20 hover:text-violet-200"
+                    >
+                      {children} ↗
+                    </a>
+                  ),
+                }}
+              >
+                {detail.markdown!}
+              </ReactMarkdown>
             </div>
           </div>
 
